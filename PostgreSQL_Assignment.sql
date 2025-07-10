@@ -1,5 +1,7 @@
 -- Active: 1751977807135@@127.0.0.1@5432@assignment2
 
+CREATE DATABASE assignment2
+
 CREATE Table rangers(
     ranger_id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -71,12 +73,6 @@ INSERT INTO sightings (ranger_id, species_id, sighting_time, location, notes) VA
 
 
 
-DROP Table sightings
-
-
-
-SELECT * FROM rangers
-
 -- PostgreSQL Problems & Sample Outputs
 
 -- 01: Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
@@ -94,7 +90,7 @@ SELECT * FROM sightings WHERE location ILIKE '%%Pass%%'
 
 -- 04 List each ranger's name and their total number of sightings.
 
-SELECT name, count(sightings.sighting_id) FROM rangers LEFT JOIN sightings ON rangers.ranger_id = sightings.ranger_id GROUP BY name
+SELECT name, count(sightings.sighting_id) as total_sightings FROM rangers LEFT JOIN sightings ON rangers.ranger_id = sightings.ranger_id GROUP BY name
 
 
 --  05 List species that have never been sighted.
@@ -119,5 +115,23 @@ SET conservation_status = 'Historic'
 WHERE (extract(YEAR FROM discovery_date )) <1800
 
 
+-- 08: Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+-- Morning: before 12 PM
+-- Afternoon: 12 PM–5 PM
+-- Evening: after 5 PM
 
 
+SELECT sighting_id,CASE 
+    WHEN extract(HOUR FROM sighting_time) < 12 THEN 'Morning' 
+    WHEN extract(HOUR FROM sighting_time) BETWEEN 12 and 17 THEN 'Afternoon'
+    ELSE 'Evening' 
+END as time_of_day FROM sightings
+
+
+-- 09: Delete rangers who have never sighted any species
+DELETE FROM rangers
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM sightings
+    WHERE sightings.ranger_id = rangers.ranger_id
+);
