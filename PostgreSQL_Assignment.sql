@@ -19,7 +19,18 @@ CREATE Table sightings(
     sighting_id SERIAL PRIMARY KEY NOT NULL,
     ranger_id INT REFERENCES rangers(ranger_id) NOT NULL,
     species_id INT REFERENCES species(species_id) NOT NULL,
-    sighting_time TIMESTAMP NOT NULL,
+    sighting_time TIMESTAMPTZ NOT NULL,
     location VARCHAR(100) NOT NULL,
-    notes VARCHAR(100)
+    notes VARCHAR(200)
 )
+
+
+SELECT * FROM sightings
+
+ALTER Table sightings
+alter COLUMN notes
+set data type VARCHAR(200)
+
+ALTER Table sightings
+alter COLUMN sighting_time
+set data type TIMESTAMPTZ 
