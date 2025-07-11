@@ -53,10 +53,13 @@ CREATE Table sightings(
     species_id INT REFERENCES species(species_id) NOT NULL,
     sighting_time TIMESTAMPTZ NOT NULL,
     location VARCHAR(100) NOT NULL,
-    notes VARCHAR(200)
+    notes VARCHAR(200),
+    CONSTRAINT unique_ranger_id_species_id_sighting_time UNIQUE (ranger_id, species_id,sighting_time)
 )
 
+DROP Table sightings
 
+SELECT * FROM sightings
 -- Inser Sample Data
 
 INSERT INTO sightings (ranger_id, species_id, sighting_time, location, notes) VALUES
