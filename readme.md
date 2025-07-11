@@ -66,9 +66,13 @@ PostgreSQL বিভিন্ন ক্ষেত্রে ব্যাপকভ�
 ## উদাহরণস্বরুপ
 
 CREATE TABLE students (
+
   student_id SERIAL PRIMARY KEY,
+
   name VARCHAR(50),
+
   department VARCHAR(30)
+  
 )
 
 এখানে student_id হলো Primary Key।
